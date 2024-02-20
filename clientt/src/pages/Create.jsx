@@ -1,24 +1,34 @@
 import React from "react";
 import dogPng from "../assets/dog.png";
 import "../pages/create.css";
+
+
 function Create() {
   return (
-    <div className=" flex  justify-center  ">
-      <img src={dogPng} alt="" className=" h-96 mr-48 mt-40" />
-      <div>
-        <div
-          className=" text-4xl font-bold text-white ml-32 mt-60"
-          id="nft-title"
-        >
-          Create your NFTs
+    <div className='minting'>
+        <h1 id="nft-title">Minting NFT</h1>
+        <div className="content">
+        <div className="left">
+            <div className='input-value'>
+                <label htmlFor="name">Name*</label>
+                <input type="text" placeholder='Name your NFT' id='name' />
+            </div>
+            <div className='input-value'>
+                <label htmlFor="Description">Description*</label>
+                <textarea type="text" placeholder='Describe your NFT' id='name' />
+
+            </div>
+            <div className='input-value'>
+                <label htmlFor="supply">Supply*</label>
+                <input type="number" placeholder='1' id='supply' />
+            </div>
         </div>
-        <button
-          class="h-10 px-6 font-semibold rounded-md border border-slate-200 text-slate-900"
-          type="button"
-        >
-          Add to bag
-        </button>
-      </div>
+        <div id="nft-title">
+            <h2>Create your NFT</h2>
+            <p>Once your item is Minted no changes can bee made </p>
+
+        </div>
+        </div>
     </div>
   );
 }
