@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import dogPng from "../assets/dog.png";
-import "../pages/create.css";
+import "./create.css";
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 import { ethers } from 'ethers';
 import axios from 'axios'
