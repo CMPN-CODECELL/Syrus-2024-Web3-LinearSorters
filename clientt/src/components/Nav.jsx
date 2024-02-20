@@ -3,11 +3,36 @@ import copyPng from '../assets/copy.png'
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Link } from 'react-router-dom';
+import { nft_abi, nft_address, marketplace_abi, marketplace_address } from '../constants/Constants';
 
 function Nav() {
   const [provider, setProvider] = useState(null);
   const [account, setAccount] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [items, setItems] = useState([]);
+  const [urls, setUrl] = useState([]);
+
+  const listIte = async () => {
+    console.log("yay");
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send('eth_requestAccounts', []);
+    const signer = provider.getSigner();
+    const marketplace = new ethers.Contract(marketplace_address, marketplace_abi, signer);
+    const items = await marketplace.getNft();
+    const nft = new ethers.Contract(nft_address, nft_abi, signer);
+
+    const uris = await Promise.all(items.map(async (item) => {
+      const uri = await nft.tokenURI(item.tokenId);
+      console.log(uri);
+      return uri;
+    }));
+
+    console.log(items);
+    setItems(items);
+    setUrl(uris);
+    console.log("url" + urls);
+  }
+
 
   useEffect(() => {
     async function checkLoggedIn() {
@@ -21,6 +46,7 @@ function Nav() {
             setAccount(address);
             setIsConnected(true);
           }
+          listIte();
         } catch (err) {
           console.log(err);
         }
@@ -55,7 +81,7 @@ function Nav() {
         </div>
         <div className="block lg:hidden">
           <button className="flex items-center px-3 py-2 border rounded hover:text-white hover:border-white">
-            <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+            <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
           </button>
         </div>
         <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
@@ -86,6 +112,16 @@ function Nav() {
           )}
         </div>
       </nav>
+      <div className="grid grid-cols-3 gap-4">
+  {items.map((item, index) => (
+    <div key={index} className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="p-5">
+        <img src={urls[index]} alt="" className='rounded-lg' />
+      </div>
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }
