@@ -46,6 +46,12 @@ contract Marketplace {
         NGO = payable(msg.sender);
     }
 
+    function giftNft(address receiver, uint _itemId){
+        require(_itemId > 0 && _itemId <= itemCount,"invalid item id");
+        require(items[_itemId].seller==msg.sender)
+        items[_itemId].nft.transferFrom(msg.sender, receiver, items[_itemId].tokenId);
+    }
+
     function makeNFT(IERC721 _nft, uint _tokenId, uint _price, uint _percentageDonated, uint _royalty) external  {
         require(_price > 0, "Price must be greater than zero");
         itemCount ++;
@@ -99,23 +105,9 @@ contract Marketplace {
             msg.sender
         );
 
+        
     }
 
-    function Sell(uint _itemId, uint _price) external payable{
-        require(_itemId > 0 && _itemId <= itemCount, "item doesn't exist");
-        Item storage item = items[_itemId];
-        require(item.seller==msg.sender);
-        item.toBeSold= true;
-        item.prevPrice=item.price;
-        item.price=_price;
-        emit Offered(
-            itemCount,
-            address(item.nft),
-            _itemId,
-            _price,
-            msg.sender
-        );
-    }
 
     function removeNFT(uint _itemId) external{
         require(_itemId > 0 && _itemId <= itemCount, "item doesn't exist");
@@ -134,6 +126,14 @@ contract Marketplace {
     function getNft() view external returns(Item[] memory){
         return owned_nft[msg.sender];
     }
+
+    function getAllNft() view external returns (Item[] memory) {
+    Item[] memory _items = new Item[](itemCount);
+    for (uint i = 1; i <= itemCount; i++) {
+        _items[i - 1] = items[i];
+    }
+    return _items;
+}
 
     function getProfit(uint _itemId) view internal returns(uint){
         Item memory item=items[_itemId];
