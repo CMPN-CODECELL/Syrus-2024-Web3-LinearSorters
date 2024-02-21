@@ -117,24 +117,6 @@ const marketplace_abi=[
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_itemId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_price",
-        "type": "uint256"
-      }
-    ],
-    "name": "Sell",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "feeAccount",
     "outputs": [
@@ -1026,6 +1008,6 @@ const nft_abi=[
     }
   ]
 
-  const nft_address='0x2c1cff538aBDACFCbDe3641a94D8397D48cA078d'
-  const marketplace_address='0xfeFa2A89590A9464F6b0e7730944297Dd53A744f'
+  const nft_address='0xF7Cd9eb4Cc83d7247811557075ed06163b96e48E'
+  const marketplace_address='0xF699A88FfC3ee04e30aDacDa0715fa39452DBE43'
   export {nft_abi, marketplace_abi, nft_address, marketplace_address}

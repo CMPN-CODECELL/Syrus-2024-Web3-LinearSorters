@@ -4,7 +4,7 @@
 
 
 body {
-    background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+    background-image: url("https://www.transparenttextures.com/patterns/diagmonds.png");
     background-color: #000000;
 }
 
@@ -25,4 +25,17 @@ body {
 
 .right-section {
     font-family: "Trirong", serif;
+}
+
+#gennft-title {
+    font-family: "Kode Mono", monospace;
+}
+
+#raodmap {
+    font-family: "Kode Mono", monospace;
+}
+
+.navbar {
+    font-family: "Kode Mono", monospace;
+
 }

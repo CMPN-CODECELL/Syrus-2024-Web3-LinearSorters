@@ -18,7 +18,7 @@ function Nav() {
     await provider.send('eth_requestAccounts', []);
     const signer = provider.getSigner();
     const marketplace = new ethers.Contract(marketplace_address, marketplace_abi, signer);
-    const items = await marketplace.getNft();
+    const items = await marketplace.getAllNft();
     const nft = new ethers.Contract(nft_address, nft_abi, signer);
 
     const uris = await Promise.all(items.map(async (item) => {
@@ -33,6 +33,24 @@ function Nav() {
     console.log("url" + urls);
   }
 
+  async function buy(itemId) {
+    try {
+      console.log("yay");
+      console.log(itemId);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send('eth_requestAccounts', []);
+      const signer = provider.getSigner();
+      const marketplace = new ethers.Contract(marketplace_address, marketplace_abi, signer );
+      const items = await marketplace.getAllNft();
+      const nft = new ethers.Contract(nft_address, nft_abi, signer);
+
+      const itemIdNumber = itemId.toNumber();
+      await marketplace.Buy(itemIdNumber, {value: marketplace.getTotalPrice(itemIdNumber) , gasLimit: ethers.BigNumber.from(9999999) },);
+      console.log("succ it baby");
+    } catch (e) {
+      console.log("error deleting" + e);
+    }
+  }
 
   useEffect(() => {
     async function checkLoggedIn() {
@@ -77,12 +95,7 @@ function Nav() {
     <div className='navbar'>
       <nav className="flex items-center justify-between flex-wrap bg-transparent p-6">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
-          <span className="font-semibold text-xl tracking-tight">GenNFT</span>
-        </div>
-        <div className="block lg:hidden">
-          <button className="flex items-center px-3 py-2 border rounded hover:text-white hover:border-white">
-            <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
-          </button>
+          <span id='gennft-title' className="font-semibold tracking-tight text-gradient-purple-pink-2 text-5xl">GenNFT</span>
         </div>
         <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
           <div className="text-sm lg:flex-grow">
@@ -92,16 +105,12 @@ function Nav() {
             <Link to="/about" className="block mt-4 lg:inline-block lg:mt- hover:text-white text-white mr-4">
               About
             </Link>
-            <a href="/view" className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white">
-              View
-            </a>
           </div>
           {isConnected ? (
-            <div className='flex flex-col w-28 px-6 font-semibold rounded-md border border-slate-200 text-white mt-10 '>
+            <div className='flex flex-col w-28 px-6 font-semibold rounded-md border border-slate-200 text-white mt-10 hidden lg:block'>
               <span className="text-white inline-block mt-4 lg:mt-0">LogedIn</span>
               <div className='flex'>
                 <h4 className="text-white inline-block mt-4 lg:mt-0 overflow-hidden text-ellipsis text-xs	">{account}</h4>
-                {/* <img src={copyPng} alt="" className='bg-white' /> */}
               </div>
 
             </div>
@@ -112,15 +121,22 @@ function Nav() {
           )}
         </div>
       </nav>
-      <div className="grid grid-cols-3 gap-4">
-  {items.map((item, index) => (
-    <div key={index} className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <div className="p-5">
-        <img src={urls[index]} alt="" className='rounded-lg' />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-10">
+        {items.map((item, index) => (
+          <div key={index} className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div className="p-5">
+              <img src={urls[index]} alt="" className='rounded-lg' />
+            </div>
+            <div className='flex justify-center items-center flex-col text-center '>
+              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{parseFloat(item.price.toString())}</h5>
+              <button onClick={() => buy(item.itemId)} variant="primary" size="lg" className="text-white border rounded-lg p-3 border-white mt-3 mb-3 w-20">
+                Buy
+              </button>
+            </div>
+
+          </div>
+        ))}
       </div>
-    </div>
-  ))}
-</div>
 
     </div>
   );

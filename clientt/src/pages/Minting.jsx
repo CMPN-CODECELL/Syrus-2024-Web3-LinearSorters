@@ -94,15 +94,15 @@ function Minting() {
       await (await nft.mint(uri)).wait();
       const id = await nft.tokenCount();
       await (await nft.setApprovalForAll(marketplace.address, true)).wait();
-      const listingPrice = ethers.utils.parseEther(price.toString());
-      await (await marketplace.makeNFT(nft.address, id, listingPrice, donation, royalty)).wait();
+      const listingPriceWei = ethers.utils.parseEther(price.toString());
+      await (await marketplace.makeNFT(nft.address, id, listingPriceWei, donation, royalty)).wait();
       console.log("suc");
     } catch (err) { console.log(err) }
   }
 
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center ">
+    <div className="flex flex-col md:flex-row items-center justify-center minting">
       <div className='justify-center '>
         <img src={dogPng} alt="" className=" h-[600px]  mt-40" />
       </div>
