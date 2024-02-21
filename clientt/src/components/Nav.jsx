@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Link } from 'react-router-dom';
 import { nft_abi, nft_address, marketplace_abi, marketplace_address } from '../constants/Constants';
+import Content from './Content';
 
 function Nav() {
   const [provider, setProvider] = useState(null);
@@ -92,10 +93,10 @@ function Nav() {
   }
 
   return (
-    <div className='navbar'>
-      <nav className="flex items-center justify-between flex-wrap bg-transparent p-6">
+    <div className='navbar pt-7 pl-8 pr-8'>
+      <nav className="flex items-center justify-between  flex-wrap bg-transparent pb-12">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
-          <span id='gennft-title' className="font-semibold tracking-tight text-gradient-purple-pink-2 text-5xl">GenNFT</span>
+          <span id='gennft-title' className="font-semibold text-5xl tracking-tight pr-7 text-gradient-purple-pink-2">GenNFT</span>
         </div>
         <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
           <div className="text-sm lg:flex-grow">
@@ -107,7 +108,7 @@ function Nav() {
             </Link>
           </div>
           {isConnected ? (
-            <div className='flex flex-col w-28 px-6 font-semibold rounded-md border border-slate-200 text-white mt-10 hidden lg:block'>
+            <div className='flex flex-col w-28 px-6 font-semibold rounded-md border border-slate-200 text-white mt-2 hidden lg:block'>
               <span className="text-white inline-block mt-4 lg:mt-0">LogedIn</span>
               <div className='flex'>
                 <h4 className="text-white inline-block mt-4 lg:mt-0 overflow-hidden text-ellipsis text-xs	">{account}</h4>
@@ -121,6 +122,7 @@ function Nav() {
           )}
         </div>
       </nav>
+      <Content/>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 p-10">
         {items.map((item, index) => (
           <div key={index} className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -128,8 +130,8 @@ function Nav() {
               <img src={urls[index]} alt="" className='rounded-lg' />
             </div>
             <div className='flex justify-center items-center flex-col text-center '>
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{parseFloat(item.price.toString())}</h5>
-              <button onClick={() => buy(item.itemId)} variant="primary" size="lg" className="text-white border rounded-lg p-3 border-white mt-3 mb-3 w-20">
+              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{parseFloat(item.price.toString()) / 1e18}</h5>
+              <button onClick={() => buy(item.itemId)} variant="primary" size="lg" className=" hover:bg-gray-700 text-white border rounded-lg p-3 border-white mt-3 mb-3 w-20">
                 Buy
               </button>
             </div>
